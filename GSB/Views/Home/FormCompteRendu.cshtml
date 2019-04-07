@@ -1,0 +1,110 @@
+﻿@using LaboGSB.Models.BO.BOCompteRendu;
+@using LaboGSB.Models.BO.Personne;
+@{
+    CompteRendu cr = new CompteRendu();
+    if (ViewBag.cr != null)
+    {
+        cr = ViewBag.cr;
+    }
+    List<VisiteurMedical> listeVisiteursMedicaux = new List<VisiteurMedical>();
+    if (ViewBag.listeVisiteursMedicaux != null)
+    {
+        listeVisiteursMedicaux = ViewBag.listeVisiteursMedicaux;
+    }
+    List<Contact> listeContacts = new List<Contact>();
+    if (ViewBag.listeContacts != null)
+    {
+        listeContacts = ViewBag.listeContacts;
+    }
+    List<Etablissement> listeEtablissements = new List<Etablissement>();
+    if (ViewBag.listeEtablissements != null)
+    {
+        listeEtablissements = ViewBag.listeEtablissements;
+    }
+    List<Produit> listeProduits = new List<Produit>();
+    if (ViewBag.listeProduits != null)
+    {
+        listeProduits = ViewBag.listeProduits;
+    }
+}
+
+<form class="" method="post" action="/Home/FormCompteRendu">
+
+    <fieldset>
+
+        <legend>Compte-Rendu</legend>
+
+        <div class="form-group">
+
+            <label for="date">Date :</label>
+            <input type="hidden" id="idCompteRendu" name="idCompteRendu" value="@cr.Id" class="form-control">
+            <input type="date" id="date" name="date" value="@cr.Date" class="form-control">
+
+            <label for="visiteurMedical">Visiteur Medical :</label>
+            <select id="visiteurMedical" name="visiteurMedical" class="form-control">
+                @{
+                    foreach (VisiteurMedical visiteurMedical in listeVisiteursMedicaux)
+                    {
+                        string selected = (cr.VisiteurMedicalConcerne.Id == visiteurMedical.Id) ? "selected" : "";
+
+                        <option value="@visiteurMedical.Id" @selected>@visiteurMedical.Nom</option>
+                    }
+                }
+            </select>
+
+            <label for="contact">Contact :</label>
+            <select id="contact" name="contact" class="form-control">
+                @{
+                    foreach (Contact contact in listeContacts)
+                    {
+                        string selected = (cr.ContactConcerne.Id == contact.Id) ? "selected" : "";
+
+                        <option value="@contact.Id" @selected>@contact.Nom</option>
+                    }
+                }
+            </select>
+
+            <label for="etablissement">Établissement :</label>
+            <select id="type" name="etablissement" class="form-control">
+                @{
+                    foreach (Etablissement etablissement in listeEtablissements)
+                    {
+                        string selected = (cr.EtablissementConcerne.Id == etablissement.Id) ? "selected" : "";
+
+                        <option value="@etablissement.Id" @selected>@etablissement.Nom</option>
+                    }
+                }
+            </select>
+
+            <label for="titre">Titre :</label>
+            <input type="text" id="titre" name="titre" value="@cr.Titre" class="form-control">
+
+            <label for="contenu">Contenu :</label>
+            <textarea id="contenu" name="contenu" class="form-control">@cr.Contenu</textarea>
+
+            <label for="produit">Produit échantillon :</label>
+            <select id="produit" name="produit" class="form-control">
+                @{
+                    foreach (Produit produit in listeProduits)
+                    {
+                        <option value="@produit.Id">@produit.Designation</option>
+                    }
+                }
+            </select>
+
+            <label for="quantite">Quantité :</label>
+            <select id="produit" name="produit" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <input type="submit" name="formulaireCompteRendu" value="Annuler">
+            <input type="submit" name="formulaireCompteRendu" value="Envoyer">
+        </div>
+
+    </fieldset>
+
+</form>

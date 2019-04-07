@@ -1,0 +1,43 @@
+﻿@using LaboGSB.Models.BO.Personne;
+@{
+    Contact contact = new Contact();
+    if (ViewBag.contact != null)
+    {
+        contact = ViewBag.contact;
+    }
+}
+
+<form class="" method="post" action="/Home/FormContact">
+
+    <fieldset>
+
+        <legend>Informations Contact</legend>
+
+        <div class="form-group">
+
+            <label for="nom">Nom :</label>
+            <input type="hidden" id="idContact" name="idContact" value="@contact.Id" class="form-control">
+            <input type="text" id="nom" name="nom" value="@contact.Nom" class="form-control">
+
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" name="prenom" value="@contact.Prenom" class="form-control">
+
+            <label for="adresseMel">Adresse Mel :</label>
+            <input type="text" id="adresseMel" name="adresseMel" value="@contact.Mel" class="form-control">
+
+            <label for="numeroTelephone">Numéro de téléphone :</label>
+            <input type="text" id="numeroTelephone" name="numeroTelephone" value="@contact.NumeroTelephone" class="form-control">
+
+            <label for="poste">Poste :</label>
+            <input type="text" id="poste" name="poste" value="@contact.Poste" class="form-control">
+
+            <label for="commentaire">Commentaire :</label>
+            <textarea id="commentaire" name="commentaire" class="form-control">@contact.Commentaire</textarea>
+
+            <input type="submit" name="formulaireContact" value="Annuler">
+            <input type="submit" name="formulaireContact" value="Envoyer">
+        </div>
+
+    </fieldset>
+
+</form>

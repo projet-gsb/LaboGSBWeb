@@ -1,0 +1,61 @@
+﻿@using LaboGSB.Models.BO.BOCompteRendu;
+@{
+    CompteRendu cr = new CompteRendu();
+    if (ViewBag.cr != null)
+    {
+        cr = ViewBag.cr;
+    }
+
+}
+
+<div class="">
+    <table class="">
+        <caption>
+            <h3>Compte-Rendu</h3>
+        </caption>
+        <tbody>
+            <tr>
+                <td>Rédiger le :</td>
+                <td>@cr.Date</td>
+            </tr>
+            <tr>
+                <td>Rédiger par :</td>
+                <td>@cr.VisiteurMedicalConcerne</td>
+            </tr>
+            <tr>
+                <td>Contact :</td>
+                <td><a href="../../Home/FicheContact/@cr.Id">@cr.ContactConcerne</a></td>
+            </tr>
+            <tr>
+                <td>Établissement :</td>
+                <td><a href="../../Home/FicheContact/@cr.Id">@cr.EtablissementConcerne</a></td>
+            </tr>
+            <tr>
+                <td>Titre :</td>
+                <td>@cr.Titre</td>
+            </tr>
+            <tr>
+                <td>Contenu :</td>
+                <td>@cr.Contenu</td>
+            </tr>
+            <tr>
+                <td>Produit échantillonné (quantité) :</td>
+                <td>
+                    @{
+                        foreach (Echantillon echantillon in cr.ListeEchantillon)
+                        {
+                            <a href="../../Home/FicheProduit/@cr.Id">@echantillon.ProduitEchantillonne.Designation (@echantillon.Quantite)</a>
+
+                         }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="../../Home/FormCompteRendu/@cr.Id">Modifier</a>
+                    <a href="../../Home/FormCompteRendu/@cr.Id?action=del">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,53 @@
+﻿@using LaboGSB.Models.BO.BOCompteRendu;
+@{
+    Etablissement etab = new Etablissement();
+    if (ViewBag.etablissement != null)
+    {
+            etab = ViewBag.etablissement;
+    }
+    List<TypeEtablissement> listeTypesEtablissement = new List<TypeEtablissement>();
+    if (ViewBag.listeTypesEtablissement != null)
+    {
+            listeTypesEtablissement = ViewBag.listeTypesEtablissement;
+    }
+}
+
+<form class="" method="post" action="/Home/FormEtablissement">
+
+    <fieldset>
+
+        <legend>Informations Établissement</legend>
+
+        <div class="form-group">
+            <label for="nom">Nom :</label>
+            <input type="hidden" id="idEtab" name="idEtab" value="@etab.Id" class="form-control">
+            <input type="text" id="nom" name="nom" value="@etab" class="form-control">
+
+            <label for="adresse">Adresse :</label>
+            <input type="text" id="adresse" name="adresse" value="@etab.Adresse" class="form-control">
+
+            <label for="adresseMel">Adresse Mel :</label>
+            <input type="text" id="adresseMel" name="adresseMel" value="@etab.Mel" class="form-control">
+
+            <label for="numeroTelephone">Numéro de téléphone :</label>
+            <input type="text" id="numeroTelephone" name="numeroTelephone" value="@etab.NumeroTelephone" class="form-control">
+
+            <label for="tidTypeype">Type :</label>
+            <select id="idType" name="idType" class="form-control">
+                @{
+                    foreach (TypeEtablissement typeEtablissement in listeTypesEtablissement)
+                    {
+                        string selected = (etab.Type.Id == typeEtablissement.Id) ? "selected" : "";
+
+                        <option value="@typeEtablissement.Id" @selected>@typeEtablissement.Nom</option>
+                    }
+                }
+            </select>
+
+            <input type="submit" name="formulaireEtablissement" value="Annuler">
+            <input type="submit" name="formulaireEtablissement" value="Envoyer">
+        </div>
+
+    </fieldset>
+
+</form>

@@ -1,0 +1,41 @@
+﻿@using LaboGSB.Models.BO.BOCompteRendu;
+@{
+    Produit produit = new Produit();
+    if (ViewBag.produit != null)
+    {
+        produit = ViewBag.produit;
+    }
+
+}
+
+<div class="">
+    <table class="">
+        <caption>
+            <h3>Fiche Produit</h3>
+        </caption>
+        <tbody>
+            <tr>
+                <td>Désignation :</td>
+                <td>@produit.Designation</td>
+            </tr>
+            <tr>
+                <td>Description :</td>
+                <td>@produit.Description</td>
+            </tr>
+            <tr>
+                <td>Quantité :</td>
+                <td>@produit.Quantite</td>
+            </tr>
+            <tr>
+                <td>Tarif :</td>
+                <td>@produit.Tarif</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="../../Home/FormProduit/@produit.Id">Modifier</a>
+                    <a href="../../Home/FormProduit/@produit.Id?action=del">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

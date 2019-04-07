@@ -1,0 +1,37 @@
+﻿@using LaboGSB.Models.BO.BOCompteRendu;
+@{
+    Produit produit = new Produit();
+    if (ViewBag.produit != null)
+    {
+        produit = ViewBag.produit;
+    }
+}
+
+<form class="" method="post" action="/Home/FormProduit">
+
+    <fieldset>
+
+        <legend>Informations Produit</legend>
+
+        <div class="form-group">
+
+            <label for="designation">Désignation :</label>
+            <input type="hidden" id="idProduit" name="idProduit" value="@produit.Id" class="form-control">
+            <input type="text" id="designation" name="designation" value="@produit.Designation" class="form-control">
+
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" class="form-control">@produit.Description</textarea>
+
+            <label for="quantite">Quantité :</label>
+            <input type="text" id="quantite" name="quantite" value="@produit.Quantite" class="form-control">
+
+            <label for="tarif">Tarif :</label>
+            <input type="text" id="tarif" name="tarif" value="@produit.Tarif" class="form-control">
+
+            <input type="submit" name="formulaireProduit" value="Annuler">
+            <input type="submit" name="formulaireProduit" value="Envoyer">
+        </div>
+
+    </fieldset>
+
+</form>

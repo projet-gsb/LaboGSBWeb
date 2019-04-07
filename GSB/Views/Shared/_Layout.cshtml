@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Laboratoire GSB Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="@Url.Action("Accueil", "Home")" class="navbar-brand"><span class="glyphicon glyphicon-home"></span> Accueil</a>
+                <a href="@Url.Action("Accueil", "Home")" class="navbar-brand"><span class="glyphicon glyphicon-list-alt"></span> Compte-Rendu</a>
+                <a href="@Url.Action("Accueil", "Home")" class="navbar-brand"><span class="glyphicon glyphicon-euro"></span> Fiche de Frais</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Laboratoire GSB Application</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>

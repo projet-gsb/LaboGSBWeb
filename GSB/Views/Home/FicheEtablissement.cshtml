@@ -1,0 +1,45 @@
+﻿@using LaboGSB.Models.BO.BOCompteRendu;
+@{
+    Etablissement etab = new Etablissement();
+    if (ViewBag.etablissement != null)
+    {
+        etab = ViewBag.etablissement;
+    }
+
+}
+
+<div class="">
+    <table class="">
+        <caption>
+            <h3>Fiche Établissement</h3>
+        </caption>
+        <tbody>
+            <tr>
+                <td>Nom :</td>
+                <td>@etab</td>
+            </tr>
+            <tr>
+                <td>Adresse :</td>
+                <td>@etab.Adresse</td>
+            </tr>
+            <tr>
+                <td>Adresse Mel :</td>
+                <td>@etab.Mel</td>
+            </tr>
+            <tr>
+                <td>Numéro de téléphone :</td>
+                <td>@etab.NumeroTelephone</td>
+            </tr>
+            <tr>
+                <td>Type :</td>
+                <td>@etab.Type</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="../../Home/FormEtablissement/@etab.Id">Modifier</a>
+                    <a href="../../Home/FormEtablissement/@etab.Id?action=del">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

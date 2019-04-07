@@ -1,0 +1,49 @@
+﻿@using LaboGSB.Models.BO.Personne;
+@{
+    Contact contact = new Contact();
+    if (ViewBag.contact != null)
+    {
+        contact = ViewBag.contact;
+    }
+
+}
+
+<div class="">
+    <table class="">
+        <caption>
+            <h3>Fiche Contact</h3>
+        </caption>
+        <tbody>
+            <tr>
+                <td>Nom :</td>
+                <td>@contact.Nom</td>
+            </tr>
+            <tr>
+                <td>Prénom :</td>
+                <td>@contact.Prenom</td>
+            </tr>
+            <tr>
+                <td>Adresse Mel :</td>
+                <td>@contact.Mel</td>
+            </tr>
+            <tr>
+                <td>Numéro de téléphone :</td>
+                <td>@contact.NumeroTelephone</td>
+            </tr>
+            <tr>
+                <td>Poste :</td>
+                <td>@contact.Poste</td>
+            </tr>
+            <tr>
+                <td>Commentaire :</td>
+                <td>@contact.Commentaire</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="../../Home/FormContact/@contact.Id">Modifier</a>
+                    <a href="../../Home/FormContact/@contact.Id?action=del">Supprimer</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
