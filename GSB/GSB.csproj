@@ -155,9 +155,10 @@
     <Content Include="Views\Home\FormEtablissement.cshtml" />
     <Content Include="Views\Home\FormContact.cshtml" />
     <Content Include="Views\Home\FormCompteRendu.cshtml" />
-    <Content Include="Views\Home\Accueil.cshtml" />
+    <Content Include="Views\Home\AccueilCR.cshtml" />
     <Content Include="Views\Home\FormProduit.cshtml" />
     <Content Include="Views\Home\FicheProduit.cshtml" />
+    <Content Include="Views\Home\AccueilFrais.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -206,11 +207,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-   <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+  <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
     <ItemGroup>
       <RoslynFiles Include="$(CscToolPath)\*" />
     </ItemGroup>
     <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
     <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
-</Target>
+  </Target>
 </Project>

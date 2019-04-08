@@ -26,7 +26,7 @@ namespace GSB.Controllers
             return View();
         }
 
-        public ActionResult Accueil(string id)
+        public ActionResult AccueilCR(string id)
         {
             ActionResult retour = View();
 
@@ -69,6 +69,11 @@ namespace GSB.Controllers
             }
 
                 return retour;
+        }
+
+        public ActionResult AccueilFrais(string id)
+        {
+            return View();
         }
 
         public ActionResult FormCompteRendu(String id)
