@@ -51,7 +51,6 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
 
                 echantillon = new Echantillon(idCompteRendu, produit, quantite);
             }
-            datareader.Close();
 
             return echantillon;
         }

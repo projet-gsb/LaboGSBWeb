@@ -55,7 +55,6 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
                 List<BO.BOCompteRendu.Etablissement> employeur = RetrouverListeEmployeur(id);
                 contact = new Contact(poste, commentaire, employeur, idPersonne, nom, prenom, mel, numeroTelephone);
             }
-            dataReader.Close();
 
             return contact;
         }
@@ -117,7 +116,6 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
 
                 listeEmployeur.Add(etablissement);
             }
-            dataReader.Close();
             return listeEmployeur;
         }
 

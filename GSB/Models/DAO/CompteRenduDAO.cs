@@ -75,7 +75,6 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
 
                 compteRendu = new CompteRendu(id, visiteurMedical, contact, etablissement, titre, contenu, date, listeEchantillon);
             }
-            dataReader.Close();
 
             return compteRendu;
 
