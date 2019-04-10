@@ -16,14 +16,50 @@ namespace GSB.Controllers
     {
 
         // GET: Home
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
+
         public ActionResult Index()
         {
-            return View();
+            if (Session["UserID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         public ActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(VisiteurMedical objUser)
+        {
+            VisiteurMedicalDAO visiteurMedicalDao = new VisiteurMedicalDAO();
+            List<VisiteurMedical> listeVisiteursMedicaux = visiteurMedicalDao.RetournerTousLesVisiteursMedicaux();
+            ViewBag.listeVisiteursMedicaux = listeVisiteursMedicaux;
+
+            if (ModelState.IsValid)
+            {
+
+
+                var obj = listeVisiteursMedicaux.Where(a => a.Mel.Equals(objUser.Mel) && a.MotDePasse.Equals(objUser.MotDePasse)).FirstOrDefault();
+                if (obj != null)
+                {
+                    Session["UserID"] = obj.Id.ToString();
+                    Session["UserName"] = obj.Nom.ToString();
+                    return RedirectToAction("Index");
+                }
+
+            }
+            return View(objUser);
         }
 
         public ActionResult AccueilCR(string id)

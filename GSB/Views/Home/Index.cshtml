@@ -1,1 +1,12 @@
-﻿# TODO Message Accueil et Connexion
+﻿@{
+    ViewBag.Title = "index";
+}
+
+<fieldset>
+    <legend> Connexion </legend>
+
+    @if (Session["UserName"] != null)
+    {
+        <text>Bienvenue sur l'application du laboratoire GSB @Session["UserName"].ToString() ! </text>
+    }
+</fieldset>
