@@ -51,7 +51,6 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
 
                 etablissement = new Etablissement(idEtablissement, nom, adresse, numeroTelephone, mel, typeEtab);
             }
-            // dataReader.Close();
 
             return etablissement;
         }
