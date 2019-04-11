@@ -5,8 +5,9 @@
 <fieldset>
     <legend> Connexion </legend>
 
-    @if (Session["UserName"] != null)
+    @if (Session["UserName"] != null) //s'il existe une session ouverte message d'accueil sinon le controleur renvoit vers la page Login
     {
         <text>Bienvenue sur l'application du laboratoire GSB @Session["UserName"].ToString() ! </text>
     }
+
 </fieldset>
