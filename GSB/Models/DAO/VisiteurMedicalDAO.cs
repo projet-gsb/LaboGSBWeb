@@ -104,6 +104,7 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
         public List<Etablissement> RetrouverListeClient(int idVisiteurMedical)
         {
             List<Etablissement> listeClient = new List<Etablissement>();
+            List<int> listeId = new List<int>();
             SqlCommand command = Connexion.GetInstance().CreateCommand();
             command.CommandText = "SELECT * FROM relationcommerciale WHERE idVisiteurMedical = @idVisiteurMedical";
             command.Parameters.AddWithValue("@idVisiteurMedical", idVisiteurMedical);
@@ -111,14 +112,18 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
             SqlDataReader dataReader = command.ExecuteReader();
             while (dataReader.Read())
             {
-                int idEtablissement = dataReader.GetInt32(0);
+                listeId.Add(dataReader.GetInt32(0));
+            }
+            dataReader.Close();
 
+            foreach (int idEtablissement in listeId)
+            {
                 EtablissementDAO etablissementDAO = new EtablissementDAO();
                 Etablissement etablissement = etablissementDAO.Read(idEtablissement);
 
                 listeClient.Add(etablissement);
             }
-            dataReader.Close();
+
             return listeClient;
         }
 

@@ -16,8 +16,9 @@ namespace LaboGSB.Models.DAO
             if (LaConnexion == null)
             {   //ligne à decommenter en fonction de chaque poste
                 string connectionString = "Server=localhost\\SQLEXPRESS;Database=gsb-gestion;User Id=Admin;Password= mdp; ";
-                //string connectionString = "Server=BTSWIN7-99\\BourgeoisG2018;Database=gsb-gestion;User Id=gaetan56;Password=1634; ";       
-
+                //string connectionString = "Server=localhost\\BTSWIN7-99\\BourgeoisG2018;Database=gsb-gestion;User Id=gaetan56;Password= 1634; ";
+                //string connectionString = "Server=localhost\\SQLEXPRESS;Database=gsb-gestion;User Id=FlorentG;Password= sio; ";
+                // string connectionString = "Server=localhost\\SQLEXPRESS;Database=gsb-gestion;User Id=Maxou;Password=sio; ";
                 LaConnexion = new SqlConnection(connectionString);
                 try
                 {

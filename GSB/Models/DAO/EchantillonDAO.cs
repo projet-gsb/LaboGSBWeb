@@ -69,6 +69,7 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
         public List<Echantillon> RetrouverListeEchantillon(int idCompteRendu)
         {
             List<Echantillon> listeEchantillon = new List<Echantillon>();
+            List<int[]> listeId = new List<int[]>();
             SqlCommand command = Connexion.GetInstance().CreateCommand();
             command.CommandText = "SELECT * FROM echantillon WHERE idCompteRendu = @idCompteRendu";
             command.Parameters.AddWithValue("@idCompteRendu", idCompteRendu);
@@ -76,17 +77,21 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
             SqlDataReader dataReader = command.ExecuteReader();
             while (dataReader.Read())
             {
-                int idProduit = dataReader.GetInt32(1);
-                int quantite = dataReader.GetInt32(2);
-                dataReader.Close();
-
-                ProduitDAO produitDao = new ProduitDAO();
-                Produit produit = produitDao.Read(idProduit);
-
-                Echantillon echantillon = new Echantillon(idCompteRendu, produit, quantite);
-                listeEchantillon.Add(echantillon);
+                int[] ids = new int[2];
+                ids[0] = dataReader.GetInt32(1);
+                ids[1] = dataReader.GetInt32(2);
+                listeId.Add(ids);
             }
             dataReader.Close();
+
+            foreach (int[] ids in listeId)
+        {
+                ProduitDAO produitDao = new ProduitDAO();
+                Produit produit = produitDao.Read(ids[0]);
+
+                Echantillon echantillon = new Echantillon(idCompteRendu, produit, ids[1]);
+                listeEchantillon.Add(echantillon);
+            }
 
             return listeEchantillon;
         }
