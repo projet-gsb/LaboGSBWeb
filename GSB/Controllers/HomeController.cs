@@ -21,8 +21,20 @@ namespace GSB.Controllers
         //{
         //    return View();
         //}
-      
 
+        public  ActionResult rechercheVide()
+        {
+            return View();
+        }
+
+        public string MettreEnMinuscule(string text)
+        {
+            text = text.ToLower();
+
+            return text;
+        }
+
+    
         public ActionResult Index()                 //page de demarrage qui determine si session ouverte ou non
         {
             if (Session["UserID"] != null)
@@ -49,7 +61,8 @@ namespace GSB.Controllers
 
             if (ModelState.IsValid)     
             {
-                var obj = listeVisiteursMedicaux.Where(a => a.Mel.Equals(objUser.Mel) && a.MotDePasse.Equals(objUser.MotDePasse)).FirstOrDefault(); //requete qui utilise les champs(mel,mdp) dans Login
+                var obj = listeVisiteursMedicaux.Where(a => a.Mel.Equals(objUser.Mel) && a.MotDePasse.Equals(objUser.MotDePasse)).FirstOrDefault(); 
+                //requete qui utilise les champs(mel, mdp) entrés par l'utilisateur dans Login
                 if (obj != null)
                 {
                     Session["UserID"] = obj.Id.ToString();      //recupération de l'id utilisateur
@@ -76,9 +89,15 @@ namespace GSB.Controllers
                 ContactDAO contactDao = new ContactDAO();
                 ProduitDAO produitDao = new ProduitDAO();
                 List<CompteRendu> listeCompteRendus = crDao.RetournerTousLesCompteRendus();
+                List<CompteRendu> rechercheCompteRendu = new List<CompteRendu>();
                 List<Etablissement> listeEtablissements = etabDao.RetournerTousLesEtablissements();
+                List<Etablissement> rechercheEtablissement = new List<Etablissement>();
                 List<Contact> listeContacts = contactDao.RetournerTousLesContacts();
+                List<Contact> rechercheContact = new List<Contact>();
                 List<Produit> listeProduits = produitDao.RetournerTousLesProduits();
+                List<Produit> rechercheProduit = new List<Produit>();
+
+
                 ViewBag.listeCompteRendus = listeCompteRendus;
                 ViewBag.listeEtablissements = listeEtablissements;
                 ViewBag.listeContacts = listeContacts;
@@ -87,6 +106,8 @@ namespace GSB.Controllers
                 ViewBag.afficherListeEtab = false;
                 ViewBag.afficherListeContacts = false;
                 ViewBag.afficherListeProduits = false;
+               
+                
 
 
                 if (!String.IsNullOrWhiteSpace(id))
@@ -109,6 +130,80 @@ namespace GSB.Controllers
                     }
                 }
 
+                if (Request.HttpMethod == "POST")           //Fonction de recherche 
+                {
+                    if (Request.Form["rechercheEtab"] != null)
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheEtab"]);
+
+                        foreach (Etablissement etab in listeEtablissements)
+                        {
+                            if (MettreEnMinuscule(etab.Nom).Contains(recherche) || MettreEnMinuscule(etab.Adresse).Contains(recherche))
+                            {
+                                rechercheEtablissement.Add(etab);
+                                ViewBag.listeEtablissements = rechercheEtablissement;
+
+                                ViewBag.afficherListeEtab = true;
+                            }
+
+                        }
+
+                    }
+
+                    else if (Request.Form["rechercheContact"] != null)
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheContact"]);
+
+                        foreach (Contact contact in listeContacts)
+                        {
+                            if (MettreEnMinuscule(contact.Nom).Contains(recherche))                        
+                            {
+                                rechercheContact.Add(contact);
+                                ViewBag.listeContacts = rechercheContact;
+
+                                ViewBag.afficherListeContacts = true;
+                            }
+                        }
+                    }
+
+                    else if (Request.Form["rechercheProduit"] != null)
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheProduit"]);
+
+                        foreach (Produit produit in listeProduits)
+                        {
+                            if (MettreEnMinuscule(produit.Designation).Contains(recherche) || MettreEnMinuscule(produit.Description).Contains(recherche))
+                            {
+                                rechercheProduit.Add(produit);
+                                ViewBag.listeProduits = rechercheProduit;
+
+                                ViewBag.afficherListeProduits = true;
+                            }
+                        }
+                    }
+
+                    else if (Request.Form["rechercheCompteRendu"] != null)
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheCompteRendu"]);
+
+                        foreach (CompteRendu compteRendu in listeCompteRendus)
+                        {
+                            if (compteRendu.Titre.Contains(recherche))
+                            {
+                                rechercheCompteRendu.Add(compteRendu);
+                                ViewBag.listeCompteRendus = rechercheCompteRendu;
+
+                                ViewBag.afficherListeCompteRendus = true;
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        return View("rechercheVide");
+                    }
+
+                }
                 return retour;
             }
         }

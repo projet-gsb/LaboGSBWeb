@@ -100,7 +100,7 @@ namespace LaboGSB.Models.DAO.DAOCompteRendu
             {
                 Etablissement etab = this.Read(id);
                 listeEtablissements.Add(etab);
-}
+            }
 
             return listeEtablissements;
         }
