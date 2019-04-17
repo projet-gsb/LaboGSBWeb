@@ -11,6 +11,7 @@
     bool afficherListeEtab = ViewBag.afficherListeEtab;
     bool afficherListeContacts = ViewBag.afficherListeContacts;
     bool afficherListeProduits = ViewBag.afficherListeProduits;
+    bool rechercheNull = ViewBag.rechercheNull;
     String activeOngletCompteRendu = afficherListeCompteRendus ? "class=\"active\"" : "";
     String activeOngletEtablissements = afficherListeEtab ? "class=\"active\"" : "";
     String activeOngletContact = afficherListeContacts ? "class=\"active\"" : "";
@@ -46,13 +47,21 @@
                     <th class="col-lg-2">Type</th>
                 </tr>
                 @{
-                    foreach (Etablissement etab in listeEtablissements)
+                    if (rechercheNull)
                     {
-                        <tr>
-                            <td><a href="/Home/FicheEtablissement/@etab.Id">@etab</a></td>
-                            <td>@etab.Adresse</td>
-                            <td>@etab.Type</td>
-                        </tr>
+                        <text>Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (Etablissement etab in listeEtablissements)
+                        {
+                            <tr>
+                                <td><a href="/Home/FicheEtablissement/@etab.Id">@etab</a></td>
+                                <td>@etab.Adresse</td>
+                                <td>@etab.Type</td>
+                            </tr>
+                        }
                     }
                 }
             </thead>
@@ -78,15 +87,24 @@
                     <th class="col-lg-3">Poste</th>
                 </tr>
                 @{
-                    foreach (Contact contact in listeContacts)
+                    if (rechercheNull) 
                     {
-                        <tr>
-                            <td><a href="/Home/FicheContact/@contact.Id">@contact</a></td>
-                            <td>@contact.NumeroTelephone</td>
-                            <td>@contact.Poste</td>
-                        </tr>
+                        <text>Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (Contact contact in listeContacts)
+                        {
+                            <tr>
+                                <td><a href="/Home/FicheContact/@contact.Id">@contact</a></td>
+                                <td>@contact.NumeroTelephone</td>
+                                <td>@contact.Poste</td>
+                            </tr>
+                        }
                     }
                 }
+
             </thead>
             <tbody></tbody>
         </table>
@@ -111,13 +129,21 @@
                     <th class="col-lg-2">Tarif</th>
                 </tr>
                 @{
-                    foreach (Produit produit in listeProduits)
+                    if (rechercheNull)
                     {
-                        <tr>
-                            <td><a href="/Home/FicheProduit/@produit.Id">@produit</a></td>
-                            <td>@produit.Quantite</td>
-                            <td>@produit.Tarif</td>
-                        </tr>
+                        <text>Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (Produit produit in listeProduits)
+                        {
+                            <tr>
+                                <td><a href="/Home/FicheProduit/@produit.Id">@produit</a></td>
+                                <td>@produit.Quantite</td>
+                                <td>@produit.Tarif</td>
+                            </tr>
+                        }
                     }
                 }
             </thead>
@@ -146,15 +172,23 @@
                     <th class="col-lg-3">Contact</th>
                 </tr>
                 @{
-                    foreach (CompteRendu cr in listeCompteRendus)
+                    if (rechercheNull)
                     {
-                        <tr>
-                            <td>@cr.Titre</td>
-                            <td><a href="/Home/FicheCompteRendu/@cr.Id">@cr.Date</a></td>
-                            <td>@cr.VisiteurMedicalConcerne</td>
-                            <td>@cr.EtablissementConcerne</td>
-                            <td>@cr.ContactConcerne</td>
-                        </tr>
+                       <text> Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (CompteRendu cr in listeCompteRendus)
+                        {
+                            <tr>
+                                <td>@cr.Titre</td>
+                                <td><a href="/Home/FicheCompteRendu/@cr.Id">@cr.Date</a></td>
+                                <td>@cr.VisiteurMedicalConcerne</td>
+                                <td>@cr.EtablissementConcerne</td>
+                                <td>@cr.ContactConcerne</td>
+                            </tr>
+                        }
                     }
                 }
 

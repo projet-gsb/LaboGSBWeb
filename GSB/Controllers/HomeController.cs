@@ -34,7 +34,6 @@ namespace GSB.Controllers
             return text;
         }
 
-    
         public ActionResult Index()                 //page de demarrage qui determine si session ouverte ou non
         {
             if (Session["UserID"] != null)
@@ -96,6 +95,7 @@ namespace GSB.Controllers
                 List<Contact> rechercheContact = new List<Contact>();
                 List<Produit> listeProduits = produitDao.RetournerTousLesProduits();
                 List<Produit> rechercheProduit = new List<Produit>();
+                
 
 
                 ViewBag.listeCompteRendus = listeCompteRendus;
@@ -106,9 +106,7 @@ namespace GSB.Controllers
                 ViewBag.afficherListeEtab = false;
                 ViewBag.afficherListeContacts = false;
                 ViewBag.afficherListeProduits = false;
-               
-                
-
+                ViewBag.rechercheNull = false;
 
                 if (!String.IsNullOrWhiteSpace(id))
                 {
@@ -130,38 +128,43 @@ namespace GSB.Controllers
                     }
                 }
 
-                if (Request.HttpMethod == "POST")           //Fonction de recherche 
+                //Fonction de recherche
+                if (Request.HttpMethod == "POST")                                               // Evenement clic sur le bouton de recherche         
                 {
-                    if (Request.Form["rechercheEtab"] != null)
+                    if (Request.Form["rechercheEtab"] != null)                                  // on test si la recherche n'est pas vide 
                     {
-                        string recherche = MettreEnMinuscule(Request.Form["rechercheEtab"]);
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheEtab"]);    // on met la recherche en lettres minuscules (pour correspondre avec la BD)
+                        ViewBag.afficherListeEtab = true;
 
-                        foreach (Etablissement etab in listeEtablissements)
+                        foreach (Etablissement etab in listeEtablissements)                     // pour chaque etablissement de la liste de d'etablissement 
                         {
-                            if (MettreEnMinuscule(etab.Nom).Contains(recherche) || MettreEnMinuscule(etab.Adresse).Contains(recherche))
+                            if (MettreEnMinuscule(etab.Nom).Contains(recherche) || MettreEnMinuscule(etab.Adresse).Contains(recherche)) // on compare la recherche avec la BD
                             {
-                                rechercheEtablissement.Add(etab);
-                                ViewBag.listeEtablissements = rechercheEtablissement;
-
-                                ViewBag.afficherListeEtab = true;
+                                rechercheEtablissement.Add(etab);                               // pour chaque correspondance on ajoute dans la liste de recherche 
+                                ViewBag.listeEtablissements = rechercheEtablissement;           // on change l'ancienne liste affichée sur la View 
                             }
-
+                            else
+                            {
+                                ViewBag.rechercheNull = true;
+                            }
                         }
-
                     }
 
                     else if (Request.Form["rechercheContact"] != null)
                     {
                         string recherche = MettreEnMinuscule(Request.Form["rechercheContact"]);
+                        ViewBag.afficherListeContacts = true;
 
                         foreach (Contact contact in listeContacts)
                         {
-                            if (MettreEnMinuscule(contact.Nom).Contains(recherche))                        
+                            if (MettreEnMinuscule(contact.Nom).Contains(recherche) || MettreEnMinuscule(contact.Prenom).Contains(recherche))                        
                             {
                                 rechercheContact.Add(contact);
                                 ViewBag.listeContacts = rechercheContact;
-
-                                ViewBag.afficherListeContacts = true;
+                            }
+                            else
+                            {
+                                ViewBag.rechercheNull = true;
                             }
                         }
                     }
@@ -169,6 +172,7 @@ namespace GSB.Controllers
                     else if (Request.Form["rechercheProduit"] != null)
                     {
                         string recherche = MettreEnMinuscule(Request.Form["rechercheProduit"]);
+                        ViewBag.afficherListeProduits = true;
 
                         foreach (Produit produit in listeProduits)
                         {
@@ -176,33 +180,34 @@ namespace GSB.Controllers
                             {
                                 rechercheProduit.Add(produit);
                                 ViewBag.listeProduits = rechercheProduit;
-
-                                ViewBag.afficherListeProduits = true;
                             }
+                            else
+                            {
+                                ViewBag.rechercheVide = true;
+                            }
+                           
                         }
                     }
 
                     else if (Request.Form["rechercheCompteRendu"] != null)
                     {
                         string recherche = MettreEnMinuscule(Request.Form["rechercheCompteRendu"]);
+                        ViewBag.afficherListeCompteRendus = true;
 
                         foreach (CompteRendu compteRendu in listeCompteRendus)
                         {
                             if (compteRendu.Titre.Contains(recherche))
                             {
                                 rechercheCompteRendu.Add(compteRendu);
-                                ViewBag.listeCompteRendus = rechercheCompteRendu;
-
-                                ViewBag.afficherListeCompteRendus = true;
+                                ViewBag.listeCompteRendus = rechercheCompteRendu; 
+                            }
+                            else
+                            {
+                                ViewBag.rechercheNull = true;
                             }
                         }
                         
                     }
-                    else
-                    {
-                        return View("rechercheVide");
-                    }
-
                 }
                 return retour;
             }
