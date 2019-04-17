@@ -11,7 +11,6 @@
     bool afficherListeEtab = ViewBag.afficherListeEtab;
     bool afficherListeContacts = ViewBag.afficherListeContacts;
     bool afficherListeProduits = ViewBag.afficherListeProduits;
-    bool rechercheNull = ViewBag.rechercheNull;
     String activeOngletCompteRendu = afficherListeCompteRendus ? "class=\"active\"" : "";
     String activeOngletEtablissements = afficherListeEtab ? "class=\"active\"" : "";
     String activeOngletContact = afficherListeContacts ? "class=\"active\"" : "";
@@ -47,7 +46,7 @@
                     <th class="col-lg-2">Type</th>
                 </tr>
                 @{
-                    if (rechercheNull)
+                    if (listeEtablissements.Count() == 0)
                     {
                         <text>Aucun Résultat </text>
                     }
@@ -87,7 +86,7 @@
                     <th class="col-lg-3">Poste</th>
                 </tr>
                 @{
-                    if (rechercheNull) 
+                    if (listeContacts.Count() == 0) 
                     {
                         <text>Aucun Résultat </text>
                     }
@@ -129,7 +128,7 @@
                     <th class="col-lg-2">Tarif</th>
                 </tr>
                 @{
-                    if (rechercheNull)
+                    if (listeProduits.Count() == 0)
                     {
                         <text>Aucun Résultat </text>
                     }
@@ -172,7 +171,7 @@
                     <th class="col-lg-3">Contact</th>
                 </tr>
                 @{
-                    if (rechercheNull)
+                    if (listeCompteRendus.Count() == 0)
                     {
                        <text> Aucun Résultat </text>
                     }
