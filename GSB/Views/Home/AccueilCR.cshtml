@@ -18,25 +18,25 @@
 
 }
 
-<form class="" method="post" action="/Home/AccueilCR">
-    <div class="form-group">
-        <label for="rechercher">Rechercher :</label>
-        <input type="text" id="rechercher" name="rechercher" value="" class="form-control">
-        <input type="submit" name="formulaireConnexion" value="Envoyer">
-    </div>
-</form>
-
-
 <ul class="nav nav-tabs">
     <li @activeOngletCompteRendu><a href="../../Home/AccueilCR/Listedescompterendus"><span class="glyphicon glyphicon-list-alt"></span> Compte-Rendus</a></li>
     <li @activeOngletEtablissements><a href="../../Home/AccueilCR/Listedesetablissements"><span class="glyphicon glyphicon-home"></span> Etablissements</a></li>
     <li @activeOngletContact><a href="../../Home/AccueilCR/Listedescontacts"><span class="glyphicon glyphicon-user"></span> Contacts</a></li>
     <li @activeOngletProduit><a href="../../Home/AccueilCR/Listedesproduits"><span class="glyphicon glyphicon-barcode"></span> Produits</a></li>
 </ul>
-
 @{
+
     if (afficherListeEtab)
     {
+        <form class="" method="post" action="/Home/AccueilCR">
+            @*formulaire de recherche*@
+            <div class="form-group">
+                <label for="rechercher">Rechercher :</label>
+                <input type="text" id="rechercher" name="rechercheEtab" value="" class="form-control">
+                <input type="submit" name="formulaireRecherche" value="Envoyer">
+            </div>
+        </form>
+
         <a type="button" class="btn btn-custom" href="/Home/FormEtablissement">Ajouter Etablissement</a>
         <table class="table">
             <thead>
@@ -46,13 +46,21 @@
                     <th class="col-lg-2">Type</th>
                 </tr>
                 @{
-                    foreach (Etablissement etab in listeEtablissements)
+                    if (listeEtablissements.Count() == 0)
                     {
-                        <tr>
-                            <td><a href="/Home/FicheEtablissement/@etab.Id">@etab</a></td>
-                            <td>@etab.Adresse</td>
-                            <td>@etab.Type</td>
-                        </tr>
+                        <text>Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (Etablissement etab in listeEtablissements)
+                        {
+                            <tr>
+                                <td><a href="/Home/FicheEtablissement/@etab.Id">@etab</a></td>
+                                <td>@etab.Adresse</td>
+                                <td>@etab.Type</td>
+                            </tr>
+                        }
                     }
                 }
             </thead>
@@ -61,6 +69,14 @@
     }
     else if (afficherListeContacts)
     {
+        <form class="" method="post" action="/Home/AccueilCR">
+            <div class="form-group">
+                <label for="rechercher">Rechercher :</label>
+                <input type="text" id="rechercher" name="rechercheContact" value="" class="form-control">
+                <input type="submit" name="formulaireRecherche" value="Envoyer">
+            </div>
+        </form>
+
         <a type="button" class="btn btn-custom" href="/Home/FormContact">Ajouter Contact</a>
         <table class="table">
             <thead>
@@ -70,21 +86,39 @@
                     <th class="col-lg-3">Poste</th>
                 </tr>
                 @{
-                    foreach (Contact contact in listeContacts)
+                    if (listeContacts.Count() == 0) 
                     {
-                        <tr>
-                            <td><a href="/Home/FicheContact/@contact.Id">@contact</a></td>
-                            <td>@contact.NumeroTelephone</td>
-                            <td>@contact.Poste</td>
-                        </tr>
+                        <text>Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (Contact contact in listeContacts)
+                        {
+                            <tr>
+                                <td><a href="/Home/FicheContact/@contact.Id">@contact</a></td>
+                                <td>@contact.NumeroTelephone</td>
+                                <td>@contact.Poste</td>
+                            </tr>
+                        }
                     }
                 }
+
             </thead>
             <tbody></tbody>
         </table>
     }
     else if (afficherListeProduits)
     {
+
+        <form class="" method="post" action="/Home/AccueilCR">
+            <div class="form-group">
+                <label for="rechercher">Rechercher :</label>
+                <input type="text" id="rechercher" name="rechercheProduit" value="" class="form-control">
+                <input type="submit" name="formulaireRecherche" value="Envoyer">
+            </div>
+        </form>
+
         <a type="button" class="btn btn-custom" href="/Home/FormProduit">Ajouter Produit</a>
         <table class="table">
             <thead>
@@ -94,13 +128,21 @@
                     <th class="col-lg-2">Tarif</th>
                 </tr>
                 @{
-                    foreach (Produit produit in listeProduits)
+                    if (listeProduits.Count() == 0)
                     {
-                        <tr>
-                            <td><a href="/Home/FicheProduit/@produit.Id">@produit</a></td>
-                            <td>@produit.Quantite</td>
-                            <td>@produit.Tarif</td>
-                        </tr>
+                        <text>Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (Produit produit in listeProduits)
+                        {
+                            <tr>
+                                <td><a href="/Home/FicheProduit/@produit.Id">@produit</a></td>
+                                <td>@produit.Quantite</td>
+                                <td>@produit.Tarif</td>
+                            </tr>
+                        }
                     }
                 }
             </thead>
@@ -110,30 +152,50 @@
 
     else
     {
+        <form class="" method="post" action="/Home/AccueilCR">
+            <div class="form-group">
+                <label for="rechercher">Rechercher :</label>
+                <input type="text" id="rechercher" name="rechercheCompteRendu" value="" class="form-control">
+                <input type="submit" name="formulaireRecherche" value="Envoyer">
+            </div>
+        </form>
+
         <a type="button" class="btn btn-custom" href="/Home/FormCompteRendu">Ajouter Compte-Rendu</a>
         <table class="table">
             <thead>
                 <tr>
+                    <th class="col-lg-2">Titre</th>
                     <th class="col-lg-2">Date</th>
                     <th class="col-lg-3">Visiteur Médical</th>
-                    <th class="col-lg-4">Établissement</th>
+                    <th class="col-lg-3">Établissement</th>
                     <th class="col-lg-3">Contact</th>
                 </tr>
                 @{
-                    foreach (CompteRendu cr in listeCompteRendus)
+                    if (listeCompteRendus.Count() == 0)
                     {
-                        <tr>
-                            <td><a href="/Home/FicheCompteRendu/@cr.Id">@cr.Date</a></td>
-                            <td>@cr.VisiteurMedicalConcerne</td>
-                            <td>@cr.EtablissementConcerne</td>
-                            <td>@cr.ContactConcerne</td>
-                        </tr>
+                       <text> Aucun Résultat </text>
+                    }
+
+                    else
+                    {
+                        foreach (CompteRendu cr in listeCompteRendus)
+                        {
+                            <tr>
+                                <td>@cr.Titre</td>
+                                <td><a href="/Home/FicheCompteRendu/@cr.Id">@cr.Date</a></td>
+                                <td>@cr.VisiteurMedicalConcerne</td>
+                                <td>@cr.EtablissementConcerne</td>
+                                <td>@cr.ContactConcerne</td>
+                            </tr>
+                        }
                     }
                 }
+
             </thead>
             <tbody></tbody>
         </table>
     }
+
 
 }
 

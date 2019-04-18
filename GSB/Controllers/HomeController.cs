@@ -21,7 +21,18 @@ namespace GSB.Controllers
         //{
         //    return View();
         //}
-      
+
+        public ActionResult rechercheVide()
+        {
+            return View();
+        }
+
+        public string MettreEnMinuscule(string text)
+        {
+            text = text.ToLower();
+
+            return text;
+        }
 
         public ActionResult Index()                 //page de demarrage qui determine si session ouverte ou non
         {
@@ -47,9 +58,10 @@ namespace GSB.Controllers
             VisiteurMedicalDAO visiteurMedicalDao = new VisiteurMedicalDAO();
             List<VisiteurMedical> listeVisiteursMedicaux = visiteurMedicalDao.RetournerTousLesVisiteursMedicaux(); // creation de la liste de tout les visiteursmedicaux
 
-            if (ModelState.IsValid)     
+            if (ModelState.IsValid)
             {
-                var obj = listeVisiteursMedicaux.Where(a => a.Mel.Equals(objUser.Mel) && a.MotDePasse.Equals(objUser.MotDePasse)).FirstOrDefault(); //requete qui utilise les champs(mel,mdp) dans Login
+                var obj = listeVisiteursMedicaux.Where(a => a.Mel.Equals(objUser.Mel) && a.MotDePasse.Equals(objUser.MotDePasse)).FirstOrDefault();
+                //requete qui utilise les champs(mel, mdp) entrés par l'utilisateur dans Login
                 if (obj != null)
                 {
                     Session["UserID"] = obj.Id.ToString();      //recupération de l'id utilisateur
@@ -76,9 +88,15 @@ namespace GSB.Controllers
                 ContactDAO contactDao = new ContactDAO();
                 ProduitDAO produitDao = new ProduitDAO();
                 List<CompteRendu> listeCompteRendus = crDao.RetournerTousLesCompteRendus();
+                List<CompteRendu> rechercheCompteRendu = new List<CompteRendu>();
                 List<Etablissement> listeEtablissements = etabDao.RetournerTousLesEtablissements();
+                List<Etablissement> rechercheEtablissement = new List<Etablissement>();
                 List<Contact> listeContacts = contactDao.RetournerTousLesContacts();
+                List<Contact> rechercheContact = new List<Contact>();
                 List<Produit> listeProduits = produitDao.RetournerTousLesProduits();
+                List<Produit> rechercheProduit = new List<Produit>();
+
+
                 ViewBag.listeCompteRendus = listeCompteRendus;
                 ViewBag.listeEtablissements = listeEtablissements;
                 ViewBag.listeContacts = listeContacts;
@@ -88,7 +106,6 @@ namespace GSB.Controllers
                 ViewBag.afficherListeContacts = false;
                 ViewBag.afficherListeProduits = false;
                 ViewBag.rechercheNull = false;
-
 
                 if (!String.IsNullOrWhiteSpace(id))
                 {
@@ -110,6 +127,69 @@ namespace GSB.Controllers
                     }
                 }
 
+                //Fonction de recherche
+                if (Request.HttpMethod == "POST")                                               // Evenement clic sur le bouton de recherche         
+                {
+                    if (Request.Form["rechercheEtab"] != null)                                  // on test si la recherche n'est pas vide 
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheEtab"]);    // on met la recherche en lettres minuscules (pour correspondre avec la BD)
+                        ViewBag.afficherListeEtab = true;
+
+                        foreach (Etablissement etab in listeEtablissements)                     // pour chaque etablissement de la liste de d'etablissement 
+                        {
+                            if (MettreEnMinuscule(etab.Nom).Contains(recherche) || MettreEnMinuscule(etab.Adresse).Contains(recherche)) // on compare la recherche avec la BD
+                            {
+                                rechercheEtablissement.Add(etab);                               // pour chaque correspondance on ajoute dans la liste de recherche 
+                            }
+                        }
+                        ViewBag.listeEtablissements = rechercheEtablissement;           // on change l'ancienne liste affichée sur la View 
+                    }
+
+                    else if (Request.Form["rechercheContact"] != null)
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheContact"]);
+                        ViewBag.afficherListeContacts = true;
+
+                        foreach (Contact contact in listeContacts)
+                        {
+                            if (MettreEnMinuscule(contact.Nom).Contains(recherche) || MettreEnMinuscule(contact.Prenom).Contains(recherche))
+                            {
+                                rechercheContact.Add(contact);
+                            }
+                        }
+                        ViewBag.listeContacts = rechercheContact;
+                    }
+
+                    else if (Request.Form["rechercheProduit"] != null)
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheProduit"]);
+                        ViewBag.afficherListeProduits = true;
+
+                        foreach (Produit produit in listeProduits)
+                        {
+                            if (MettreEnMinuscule(produit.Designation).Contains(recherche) || MettreEnMinuscule(produit.Description).Contains(recherche))
+                            {
+                                rechercheProduit.Add(produit);
+                            }
+                        }
+                        ViewBag.listeProduits = rechercheProduit;
+                    }
+
+                    else if (Request.Form["rechercheCompteRendu"] != null)
+                    {
+                        string recherche = MettreEnMinuscule(Request.Form["rechercheCompteRendu"]);
+                        ViewBag.afficherListeCompteRendus = true;
+
+                        foreach (CompteRendu compteRendu in listeCompteRendus)
+                        {
+                            if (MettreEnMinuscule(compteRendu.Titre).Contains(recherche) || MettreEnMinuscule(compteRendu.Contenu).Contains(recherche))
+                            {
+                                rechercheCompteRendu.Add(compteRendu);
+                            }
+                        }
+                        ViewBag.listeCompteRendus = rechercheCompteRendu;
+                    }
+                }
                 return retour;
             }
         }
@@ -127,95 +207,95 @@ namespace GSB.Controllers
                 return View();
             }
         }
-        
 
-            public ActionResult FormCompteRendu(String id)
+
+        public ActionResult FormCompteRendu(String id)
+        {
+            if (Session["UserID"] == null)
             {
-                if (Session["UserID"] == null)
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                CompteRenduDAO crDao = new CompteRenduDAO();
+                VisiteurMedicalDAO visiteurMedicalDao = new VisiteurMedicalDAO();
+                ContactDAO contactDao = new ContactDAO();
+                EtablissementDAO etabDao = new EtablissementDAO();
+                ProduitDAO produitDao = new ProduitDAO();
+
+                CompteRendu cr = new CompteRendu();
+                ViewBag.cr = cr;
+
+                List<VisiteurMedical> listeVisiteursMedicaux = visiteurMedicalDao.RetournerTousLesVisiteursMedicaux();
+                ViewBag.listeVisiteursMedicaux = listeVisiteursMedicaux;
+
+                List<Contact> listeContacts = contactDao.RetournerTousLesContacts();
+                ViewBag.listeContacts = listeContacts;
+
+                List<Etablissement> listeEtablissements = etabDao.RetournerTousLesEtablissements();
+                ViewBag.listeEtablissements = listeEtablissements;
+
+                List<Produit> listeProduits = produitDao.RetournerTousLesProduits();
+                ViewBag.listeProduits = listeProduits;
+
+                ActionResult retour = View();
+
+                if (Request.HttpMethod == "POST")
                 {
-                    return RedirectToAction("Login");
-                }
-                else
-                {
-                    CompteRenduDAO crDao = new CompteRenduDAO();
-                    VisiteurMedicalDAO visiteurMedicalDao = new VisiteurMedicalDAO();
-                    ContactDAO contactDao = new ContactDAO();
-                    EtablissementDAO etabDao = new EtablissementDAO();
-                    ProduitDAO produitDao = new ProduitDAO();
+                    int idCompteRendu = Int32.Parse(Request.Form["idCompteRendu"]);
+                    VisiteurMedical visiteurMedical = listeVisiteursMedicaux.Find(vm => vm.Id == Int32.Parse(Request.Form["visiteurMedical"]));
+                    Contact contact = listeContacts.Find(cont => cont.Id == Int32.Parse(Request.Form["contact"]));
+                    Etablissement etablissement = listeEtablissements.Find(etab => etab.Id == Int32.Parse(Request.Form["etablissement"]));
+                    string titre = Request.Form["titre"];
+                    string contenu = Request.Form["contenu"];
+                    DateTime date = Convert.ToDateTime(Request.Form["date"]);
+                    List<Echantillon> listeEchantillon = new List<Echantillon>();
 
-                    CompteRendu cr = new CompteRendu();
-                    ViewBag.cr = cr;
 
-                    List<VisiteurMedical> listeVisiteursMedicaux = visiteurMedicalDao.RetournerTousLesVisiteursMedicaux();
-                    ViewBag.listeVisiteursMedicaux = listeVisiteursMedicaux;
+                    cr = new CompteRendu(idCompteRendu, visiteurMedical, contact, etablissement, titre, contenu, date, listeEchantillon);
 
-                    List<Contact> listeContacts = contactDao.RetournerTousLesContacts();
-                    ViewBag.listeContacts = listeContacts;
-
-                    List<Etablissement> listeEtablissements = etabDao.RetournerTousLesEtablissements();
-                    ViewBag.listeEtablissements = listeEtablissements;
-
-                    List<Produit> listeProduits = produitDao.RetournerTousLesProduits();
-                    ViewBag.listeProduits = listeProduits;
-
-                    ActionResult retour = View();
-
-                    if (Request.HttpMethod == "POST")
+                    if (idCompteRendu == 0)
                     {
-                        int idCompteRendu = Int32.Parse(Request.Form["idCompteRendu"]);
-                        VisiteurMedical visiteurMedical = listeVisiteursMedicaux.Find(vm => vm.Id == Int32.Parse(Request.Form["visiteurMedical"]));
-                        Contact contact = listeContacts.Find(cont => cont.Id == Int32.Parse(Request.Form["contact"]));
-                        Etablissement etablissement = listeEtablissements.Find(etab => etab.Id == Int32.Parse(Request.Form["etablissement"]));
-                        string titre = Request.Form["titre"];
-                        string contenu = Request.Form["contenu"];
-                        DateTime date = Convert.ToDateTime(Request.Form["date"]);
-                        List<Echantillon> listeEchantillon = new List<Echantillon>();
-
-
-                        cr = new CompteRendu(idCompteRendu, visiteurMedical, contact, etablissement, titre, contenu, date, listeEchantillon);
-
-                        if (idCompteRendu == 0)
-                        {
-                            crDao.Create(cr);
-                        }
-                        else
-                        {
-                            crDao.Update(cr);
-                        }
-                        ViewBag.cr = cr;
-
-                        retour = View("FicheCompteRendu");
-
+                        crDao.Create(cr);
                     }
                     else
                     {
-                        if (!String.IsNullOrWhiteSpace(id))
+                        crDao.Update(cr);
+                    }
+                    ViewBag.cr = cr;
+
+                    retour = View("FicheCompteRendu");
+
+                }
+                else
+                {
+                    if (!String.IsNullOrWhiteSpace(id))
+                    {
+                        if (Int32.TryParse(id, out int idCompteRendu))
                         {
-                            if (Int32.TryParse(id, out int idCompteRendu))
+                            if (etabDao.Read(idCompteRendu) != null)
                             {
-                                if (etabDao.Read(idCompteRendu) != null)
+                                cr = crDao.Read(idCompteRendu);
+                                if ((Request.HttpMethod == "GET") && (Request.Params["action"] != null))
                                 {
-                                    cr = crDao.Read(idCompteRendu);
-                                    if ((Request.HttpMethod == "GET") && (Request.Params["action"] != null))
+                                    if (Request.Params["action"] == "del")
                                     {
-                                        if (Request.Params["action"] == "del")
-                                        {
-                                            crDao.Delete(cr);
-                                            retour = RedirectToAction("FicheCompteRendu");
-                                        }
+                                        crDao.Delete(cr);
+                                        retour = RedirectToAction("FicheCompteRendu");
                                     }
-                                    else
-                                    {
-                                        ViewBag.cr = cr;
-                                    }
+                                }
+                                else
+                                {
+                                    ViewBag.cr = cr;
                                 }
                             }
                         }
                     }
-
-                    return retour;
                 }
+
+                return retour;
             }
+        }
 
         public ActionResult FicheCompteRendu(String id)
         {
