@@ -87,6 +87,7 @@ namespace GSB.Controllers
                 ViewBag.afficherListeEtab = false;
                 ViewBag.afficherListeContacts = false;
                 ViewBag.afficherListeProduits = false;
+                ViewBag.rechercheNull = false;
 
 
                 if (!String.IsNullOrWhiteSpace(id))
