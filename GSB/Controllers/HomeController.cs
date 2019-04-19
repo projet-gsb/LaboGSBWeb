@@ -203,8 +203,15 @@ namespace GSB.Controllers
             else
             {
                 //la méthode
+                //return View();
+                ActionResult retour = View();
 
-                return View();
+                FicheDeFraisDAO ffDao = new FicheDeFraisDAO();
+                //List<FicheDeFrais> listeFichesDeFrais = ffDao.Read(int i); //id visiteurmedical
+               
+
+                //ViewBag.listeFicheDeFrais = listeFichesDeFrais;
+               
             }
         }
 

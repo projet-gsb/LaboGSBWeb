@@ -66,5 +66,6 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
             commande.Parameters.AddWithValue("@miseEnPaiement", fichedefrais.MiseEnPaiement);
             commande.ExecuteNonQuery();
         }
+                
     }
 }
