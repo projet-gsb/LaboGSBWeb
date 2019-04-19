@@ -157,6 +157,7 @@
     <Content Include="Views\Home\AccueilFrais.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\RechercheVide.cshtml" />
+    <Content Include="Views\Home\FormFicheFrais.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
