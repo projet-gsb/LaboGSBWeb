@@ -22,7 +22,7 @@
             <input type="hidden" id="idFicheFrais" name="idFicheFrais" value="@ff.Id" class="form-control">
             <input type="date" id="dateCreation" name="dateCreation" value="@ff.DateCreation" class="form-control">
 
-            <label for="visiteurMedical">Visiteur Medical :</label>
+            @*<label for="visiteurMedical">Visiteur Medical :</label>
             <select id="visiteurMedical" name="visiteurMedical" class="form-control">
                 @{
                     foreach (VisiteurMedical visiteurMedical in listeVisiteursMedicaux)
@@ -32,7 +32,7 @@
                         <option value="@visiteurMedical.Id" @selected>@visiteurMedical.Nom</option>
                     }
                 }
-            </select>
+            </select>*@
 
             <input type="hidden" id="idFicheFrais" name="idFicheFrais" value="@ff.Id" class="form-control">
             <input type="date" id="dateTraitement" name="dateTraitement" value="@ff.DateTraitement" class="form-control">
@@ -48,54 +48,7 @@
             //TODO Affichage des ligne de frais
 
 
-            @*<label for="contact">Contact :</label>
-            <select id="contact" name="contact" class="form-control">
-                @{
-                    foreach (Contact contact in listeContacts)
-                    {
-                        string selected = (cr.ContactConcerne.Id == contact.Id) ? "selected" : "";
-
-                        <option value="@contact.Id" @selected>@contact.Nom</option>
-                    }
-                }
-            </select>*@
-
-            @*<label for="etablissement">Établissement :</label>
-            <select id="type" name="etablissement" class="form-control">
-                @{
-                    foreach (Etablissement etablissement in listeEtablissements)
-                    {
-                        string selected = (cr.EtablissementConcerne.Id == etablissement.Id) ? "selected" : "";
-
-                        <option value="@etablissement.Id" @selected>@etablissement.Nom</option>
-                    }
-                }
-            </select>*@
-
-            @*<label for="titre">Titre :</label>
-            <input type="text" id="titre" name="titre" value="@cr.Titre" class="form-control">
-
-            <label for="contenu">Contenu :</label>
-            <textarea id="contenu" name="contenu" class="form-control">@cr.Contenu</textarea>*@
-
-            @*<label for="produit">Produit échantillon :</label>
-            <select id="produit" name="produit" class="form-control">
-                @{
-                    foreach (Produit produit in listeProduits)
-                    {
-                        <option value="@produit.Id">@produit.Designation</option>
-                    }
-                }
-            </select>*@
-
-            @*<label for="quantite">Quantité :</label>
-            <select id="produit" name="produit" class="form-control">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>*@
+            @
 
             <input type="submit" name="formulaireFicheDeFrais" value="Annuler">
             <input type="submit" name="formulaireFicheDeFrais" value="Envoyer">
