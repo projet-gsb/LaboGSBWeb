@@ -719,7 +719,7 @@ namespace GSB.Controllers
                                         int idLf = Convert.ToInt32(Request.Params["ligne"]);
                                         LigneDeFrais lf = ligneDeFraisDao.Read(idLf);
                                         ligneDeFraisDao.Delete(lf);
-                                        retour = RedirectToAction("FicheFrais/" + ficheDeFrais.Id);
+                                        retour = RedirectToAction("FicheFrais", new { id = ficheDeFrais.Id });
                                     }
                                     else if (Request.Params["action"] == "modif")
                                     {
@@ -768,7 +768,14 @@ namespace GSB.Controllers
                         if ((ficheDeFrais.ListeDeLignesDeFrais.Find(lf2 => lf2.Id == idLigneFrais)) != null)
                         {
                             LigneDeFrais ligneDeFrais = (ficheDeFrais.ListeDeLignesDeFrais.Find(lf2 => lf2.Id == idLigneFrais));
-                            ligneDeFrais = lf;
+                            ligneDeFrais.Id = lf.Id;
+                            ligneDeFrais.Date = lf.Date;
+                            ligneDeFrais.Montant = lf.Montant;
+                            ligneDeFrais.Libelle = lf.Libelle;
+                            ligneDeFrais.Validee = lf.Validee;
+                            ligneDeFrais.Refusee = lf.Refusee;
+                            ligneDeFrais.HorsForfait = lf.HorsForfait;
+                            ligneDeFrais.Report = lf.Report;
                         }
                         else
                         {
@@ -777,7 +784,7 @@ namespace GSB.Controllers
 
                         ficheDeFraisDao.Update(ficheDeFrais);
                         ViewBag.ficheDeFrais = ficheDeFrais;
-                        retour = RedirectToAction("FicheFrais/" + ficheDeFrais.Id);
+                        retour = RedirectToAction("FicheFrais", new { id = ficheDeFrais.Id });
                     }
 
                 }

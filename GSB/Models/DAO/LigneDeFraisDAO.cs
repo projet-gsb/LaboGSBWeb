@@ -33,11 +33,12 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
         public override void Delete(LigneDeFrais lignedefrais)
         {
             SqlCommand commande = Connexion.GetInstance().CreateCommand();
-            int id = lignedefrais.Id;
-            commande.CommandText = "DELETE FROM lignedefrais WHERE id = @id";
+            commande.CommandText = "DELETE FROM listefrais WHERE idLigneDeFrais = @id";
             commande.Parameters.AddWithValue("@id", lignedefrais.Id);
             commande.ExecuteNonQuery();
 
+            commande.CommandText = "DELETE FROM lignedefrais WHERE id = @id";
+            commande.ExecuteNonQuery();
         }
 
         // TODO : vérifier le GetBytes(boolean) pour le booleen

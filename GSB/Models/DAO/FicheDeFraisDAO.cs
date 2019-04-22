@@ -95,6 +95,7 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
             foreach (LigneDeFrais lf in fichedefrais.ListeDeLignesDeFrais)
             {
                 ligneDeFraisDao.Update(lf);
+                commande.Parameters.Clear();
                 commande.CommandText = "INSERT INTO listefrais (idFicheDeFrais,idLigneDeFrais) VALUES (@idFicheDeFrais,@idLigneDeFrais)";
                 commande.Parameters.AddWithValue("@idFicheDeFrais", fichedefrais.Id);
                 commande.Parameters.AddWithValue("@idLigneDeFrais", lf.Id);

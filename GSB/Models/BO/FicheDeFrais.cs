@@ -46,5 +46,15 @@ namespace LaboGSB.Models.BO.BOGestionFrais
             this.MiseEnPaiement = miseenpaiement;
             this.ListeDeLignesDeFrais = listeDeLignesDeFrais;
         }
+
+        public override string ToString()
+        {
+            String listeLF = "";
+            foreach (LigneDeFrais lf in this.ListeDeLignesDeFrais)
+            {
+                listeLF += lf;
+            }
+            return this.Id + " | " + this.IdVisiteurMedical + " | " + this.DateCreation + " | " + this.DateTraitement + " | " + this.MiseEnPaiement + " | " + listeLF;
+        }
     }
 }

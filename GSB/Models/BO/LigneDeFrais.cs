@@ -28,18 +28,18 @@ namespace LaboGSB.Models.BO.BOGestionFrais
         private bool _report;
 
         public int Id { get => _id; set => _id = value; }
-        public DateTime Date { get => _date; protected set => _date = value; }
-        public double Montant { get => _montant; protected set => _montant = value; }
-        public string Libelle { get => _libelle; protected set => _libelle = value; }
-        public bool Validee { get => _validee; protected set => _validee = value; }
-        public bool Refusee { get => _refusee; protected set => _refusee = value; }
-        public bool HorsForfait { get => _horsForfait; protected set => _horsForfait = value; }
-        public bool Report { get => _report; protected set => _report = value; }
+        public DateTime Date { get => _date; set => _date = value; }
+        public double Montant { get => _montant; set => _montant = value; }
+        public string Libelle { get => _libelle; set => _libelle = value; }
+        public bool Validee { get => _validee; set => _validee = value; }
+        public bool Refusee { get => _refusee; set => _refusee = value; }
+        public bool HorsForfait { get => _horsForfait; set => _horsForfait = value; }
+        public bool Report { get => _report; set => _report = value; }
 
         public LigneDeFrais()
         {
             this.Id = 0;
-            this.Date = new DateTime();
+            this.Date = DateTime.Now;
             this.Montant = 0;
             this.Libelle = "";
             this.Validee = false;
@@ -59,6 +59,12 @@ namespace LaboGSB.Models.BO.BOGestionFrais
             this.Refusee = refusee;
             this.HorsForfait = horsForfait;
             this.Report = report;
+        }
+
+
+        public override string ToString()
+        {
+            return this.Id + " | " + this.Date + " | " + this.Montant + " | " + this.Libelle + " | " + this.Validee + " | " + this.Refusee + " | " + this.HorsForfait + " | " + this.Report;
         }
 
     }
