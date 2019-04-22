@@ -26,7 +26,7 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
             // command.ExecuteNonQuery();
             // pour récupérer la clé générée
             // Int32 newId = (Int32)command.ExecuteScalar();
-            int newId = (int)command.ExecuteScalar();
+            int newId = Convert.ToInt32(command.ExecuteScalar());
             lignedefrais.Id = newId;
         }
 
@@ -34,8 +34,8 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
         {
             SqlCommand commande = Connexion.GetInstance().CreateCommand();
             int id = lignedefrais.Id;
-            commande.CommandText = "DELETE * FROM lignedefrais WHERE id = @id";
-            commande.Parameters.AddWithValue("@id", id);
+            commande.CommandText = "DELETE FROM lignedefrais WHERE id = @id";
+            commande.Parameters.AddWithValue("@id", lignedefrais.Id);
             commande.ExecuteNonQuery();
 
         }
@@ -51,7 +51,6 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
             SqlDataReader datareader = commande.ExecuteReader();
             while (datareader.Read())
             {
-                int Id = id;
                 DateTime date = datareader.GetDateTime(1);
                 double montant = datareader.GetInt32(2);
                 string libelle = datareader.GetString(3);
@@ -68,16 +67,23 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
 
         public override void Update(LigneDeFrais lignedefrais)
         {
-            SqlCommand commande = Connexion.GetInstance().CreateCommand();
-            commande.CommandText = "UPDATE lignedefrais  SET id = @id, date = @date, montant = @montant,libelle = @libelle, validee = @validee, refusee = @refusee, horsForfait = @horsForfait, report = @report WHERE id = @id";
-            commande.Parameters.AddWithValue("@date", lignedefrais.Date);
-            commande.Parameters.AddWithValue("@montant", lignedefrais.Montant);
-            commande.Parameters.AddWithValue("@libelle", lignedefrais.Libelle);
-            commande.Parameters.AddWithValue("@validee", lignedefrais.Validee);
-            commande.Parameters.AddWithValue("@refusee", lignedefrais.Refusee);
-            commande.Parameters.AddWithValue("@horsForfait", lignedefrais.HorsForfait);
-            commande.Parameters.AddWithValue("@report", lignedefrais.Report);
-            commande.ExecuteNonQuery();
+            if (lignedefrais.Id == 0) {
+                this.Create(lignedefrais);
+            }
+            else
+            {
+                SqlCommand commande = Connexion.GetInstance().CreateCommand();
+                commande.CommandText = "UPDATE lignedefrais SET date = @date, montant = @montant,libelle = @libelle, validee = @validee, refusee = @refusee, horsForfait = @horsForfait, report = @report WHERE id = @id";
+                commande.Parameters.AddWithValue("@id", lignedefrais.Id);
+                commande.Parameters.AddWithValue("@date", lignedefrais.Date);
+                commande.Parameters.AddWithValue("@montant", lignedefrais.Montant);
+                commande.Parameters.AddWithValue("@libelle", lignedefrais.Libelle);
+                commande.Parameters.AddWithValue("@validee", lignedefrais.Validee);
+                commande.Parameters.AddWithValue("@refusee", lignedefrais.Refusee);
+                commande.Parameters.AddWithValue("@horsForfait", lignedefrais.HorsForfait);
+                commande.Parameters.AddWithValue("@report", lignedefrais.Report);
+                commande.ExecuteNonQuery();
+            }
         }
 
         public List<LigneDeFrais> RetournerToutesLesLigneDeFrais()

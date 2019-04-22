@@ -36,6 +36,18 @@ namespace LaboGSB.Models.BO.BOGestionFrais
         public bool HorsForfait { get => _horsForfait; protected set => _horsForfait = value; }
         public bool Report { get => _report; protected set => _report = value; }
 
+        public LigneDeFrais()
+        {
+            this.Id = 0;
+            this.Date = new DateTime();
+            this.Montant = 0;
+            this.Libelle = "";
+            this.Validee = false;
+            this.Refusee = false;
+            this.HorsForfait = false;
+            this.Report = false;
+        }
+
 
         public LigneDeFrais(int id, DateTime date, double montant, string libelle, bool validee, bool refusee, bool horsForfait, bool report)
         {

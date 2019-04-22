@@ -1,0 +1,74 @@
+﻿@using LaboGSB.Models.BO.BOGestionFrais;
+@{
+    FicheDeFrais ficheDeFrais = new FicheDeFrais();
+    ficheDeFrais.IdVisiteurMedical = Convert.ToInt32(Session["UserID"]);
+    String miseEnPaiement = "";
+    if (ViewBag.ficheDeFrais != null)
+    {
+        ficheDeFrais = ViewBag.ficheDeFrais;
+        miseEnPaiement = ficheDeFrais.MiseEnPaiement ? "Effectuée" : "Aucune";
+    }
+
+}
+
+<div class="">
+    <table class="table">
+        <caption>
+            <h3>Fiche de Frais n° @ficheDeFrais.Id</h3>
+        </caption>
+        <tbody>
+            <tr>
+                <td>Date de Création : @ficheDeFrais.DateCreation</td>
+            </tr>
+            <tr>
+                <td>Date de Traitement : @ficheDeFrais.DateTraitement</td>
+            </tr>
+            <tr>
+                <td>Mise en Paiement : @miseEnPaiement</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="../../Home/FicheFrais/@ficheDeFrais.Id?action=del">Supprimer la Fiche</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <caption>Lignes de Frais</caption>
+        <thead>
+            <tr>
+                <th class="col-lg-1">Numéro</th>
+                <th class="col-lg-1">Date de Création</th>
+                <th class="col-lg-3">Libellé</th>
+                <th class="col-lg-2">Montant</th>
+                <th class="col-lg-2">Statut</th>
+                <th class="col-lg-1">Hors Forfait</th>
+                <th class="col-lg-1">Report</th>
+                <th class="col-lg-1">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (LigneDeFrais lf in ficheDeFrais.ListeDeLignesDeFrais)
+            {
+                String statut = (lf.Validee) ? "Validée" : "En attente de validation";
+                statut = (lf.Refusee) ? "Refusée" : statut;
+                String horsForfait = (lf.HorsForfait) ? "Oui" : "Non";
+                String report = (lf.Report) ? "Oui" : "Non";
+                <tr>
+                    <td>N°@lf.Id</td>
+                    <td>@lf.Date</td>
+                    <td>@lf.Libelle</td>
+                    <td>@lf.Montant</td>
+                    <td>@statut</td>
+                    <td>@horsForfait</td>
+                    <td>@report</td>
+                    <td>
+                        <a href="../../Home/FormLigneFrais/@ficheDeFrais.Id?action=modif&ligne=@lf.Id">Modifier</a>
+                        <a href="../../Home/FormLigneFrais/@ficheDeFrais.Id?action=del&ligne=@lf.Id">Supprimer</a>
+                    </td>
+                </tr>
+            }
+            <tr><td class="col-lg-12"><a href="../../Home/FormLigneFrais/@ficheDeFrais.Id&action=ajout">Ajouter Ligne de Frais</a></td></tr>
+        </tbody>
+    </table>
+</div>

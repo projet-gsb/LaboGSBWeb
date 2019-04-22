@@ -1,0 +1,48 @@
+﻿@using LaboGSB.Models.BO.BOGestionFrais;
+@using LaboGSB.Models.BO.Personne;
+
+@{
+    FicheDeFrais ficheDeFrais = new FicheDeFrais();
+    LigneDeFrais ligneDeFrais = new LigneDeFrais();
+    if (ViewBag.ficheDeFrais != null)
+    {
+        ficheDeFrais = ViewBag.ficheDeFrais;
+    }
+    if (ViewBag.ligneDeFrais != null)
+    {
+        ligneDeFrais = ViewBag.ligneDeFrais;
+    }
+    String afficheCheckedHorsForfait = (ligneDeFrais.HorsForfait) ? "checked=\"checked\"": "";
+    String afficheCheckedReport = (ligneDeFrais.Report) ? "checked=\"checked\"": "";
+
+}
+
+<form class="" method="post" action="/Home/FormLigneFrais">
+
+    <fieldset>
+
+        <legend>Ligne de Frais</legend>
+
+        <div class="form-group">
+
+            <label for="libelle">Libellé :</label>
+            <input type="hidden" id="idLigneFrais" name="idLigneFrais" value="@ligneDeFrais.Id" class="form-control">
+            <input type="hidden" id="idFicheFrais" name="idFicheFrais" value="@ficheDeFrais.Id" class="form-control">
+            <input type="text" id="libelle" name="libelle" value="@ligneDeFrais.Libelle" class="form-control">
+
+            <label for="montant">Montant :</label>
+            <input type="text" id="montant" name="montant" value="@ligneDeFrais.Montant" class="form-control">€
+
+            <label for="horsforfait">Hors Forfait</label>
+            <input type="checkbox" id="horsforfait" name="horsforfait" class="form-control" value="1" @afficheCheckedHorsForfait>
+
+            <label for="report">Report</label>
+            <input type="checkbox" id="report" name="report" class="form-control" value="1" @afficheCheckedReport>
+
+            <input type="submit" name="formulaireLigneDeFrais" value="Annuler">
+            <input type="submit" name="formulaireLigneDeFrais" value="Ajouter">
+        </div>
+
+    </fieldset>
+
+</form>

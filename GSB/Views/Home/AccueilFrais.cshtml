@@ -2,20 +2,49 @@
 @using LaboGSB.Models.BO.BOGestionFrais;
 @using LaboGSB.Models.BO.Personne;
 @{
-    List<VisiteurMedical> listeVisiteurMedicalFrais = ViewBag.listeVisiteurMedicalFrais;
-    bool afficherListeVisiteurMedicalFrais = ViewBag.afficherListeVisiteurMedicalFrais;
-
+    List<FicheDeFrais> listeFichesDeFrais = ViewBag.listeFichesDeFrais;
 }
 
-<form class="" method="post" action="/Home/AccueilFrais">
+@*<form class="" method="post" action="/Home/AccueilFrais">
     <div class="form-group">
         <label for="rechercher">Rechercher :</label>
         <input type="text" id="rechercher" name="rechercher" value="" class="form-control">
-        <input type="submit" name="formulaireConnexion" value="Envoyer">
+        <input type="submit" name="formulaireRecherche" value="Envoyer">
     </div>
-</form>
-
- 
+</form>*@
 
 
+<a type="button" class="btn btn-custom" href="/Home/FicheFrais">Nouvelle Fiche de Frais</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-lg-2">Numéro</th>
+            <th class="col-lg-4">Date de Création</th>
+            <th class="col-lg-4">Date de Traitement</th>
+            <th class="col-lg-2">Mise en Paiement</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (listeFichesDeFrais.Count() == 0)
+            {
+                <text>Aucun Résultat </text>
+            }
+
+            else
+            {
+                foreach (FicheDeFrais ff in listeFichesDeFrais)
+                {
+                    String miseEnPaiement = ff.MiseEnPaiement ? "Effectuée": "Aucune";
+                    <tr>
+                        <td><a href="/Home/FicheFrais/@ff.Id">Fiche de frais n°@ff.Id</a></td>
+                        <td>@ff.DateCreation</td>
+                        <td>@ff.DateTraitement</td>
+                        <td>@miseEnPaiement</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
 

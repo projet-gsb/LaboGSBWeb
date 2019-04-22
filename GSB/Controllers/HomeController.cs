@@ -22,7 +22,7 @@ namespace GSB.Controllers
         //    return View();
         //}
 
-        public ActionResult rechercheVide()
+        public ActionResult RechercheVide()
         {
             return View();
         }
@@ -36,14 +36,17 @@ namespace GSB.Controllers
 
         public ActionResult Index()                 //page de demarrage qui determine si session ouverte ou non
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] != null)
             {
-                return View();                      //Session ouverte
+                retour = View();                      //Session ouverte
             }
             else
             {
-                return RedirectToAction("Login");   //Session fermée redirection vers page Login
+                retour = RedirectToAction("Login");   //Session fermée redirection vers page Login
             }
+            return retour;
         }
 
         public ActionResult Login()
@@ -74,15 +77,14 @@ namespace GSB.Controllers
 
         public ActionResult AccueilCR(string id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)                  // pour chaque page on verifie qu'une session existe
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
-
-                ActionResult retour = View();
-
                 CompteRenduDAO crDao = new CompteRenduDAO();
                 EtablissementDAO etabDao = new EtablissementDAO();
                 ContactDAO contactDao = new ContactDAO();
@@ -105,7 +107,6 @@ namespace GSB.Controllers
                 ViewBag.afficherListeEtab = false;
                 ViewBag.afficherListeContacts = false;
                 ViewBag.afficherListeProduits = false;
-                ViewBag.rechercheNull = false;
 
                 if (!String.IsNullOrWhiteSpace(id))
                 {
@@ -190,29 +191,42 @@ namespace GSB.Controllers
                         ViewBag.listeCompteRendus = rechercheCompteRendu;
                     }
                 }
-                return retour;
             }
+            return retour;
         }
 
         public ActionResult AccueilFrais(string id)
         {
             ActionResult retour = View();
 
-            if (Session["UserID"] == null)
+            if (Session["UserID"] == null)                  // pour chaque page on verifie qu'une session existe
             {
                 retour = RedirectToAction("Login");
             }
             else
             {
-                //la méthode
-                //return View();
-
                 FicheDeFraisDAO ffDao = new FicheDeFraisDAO();
-                //List<FicheDeFrais> listeFichesDeFrais = ffDao.Read(int i); //id visiteurmedical
+                int idVisiteurMedical = Convert.ToInt32(Session["UserID"]);
+                List<FicheDeFrais> listeFichesDeFrais = ffDao.RetournerToutesLesFichesDeFrais(idVisiteurMedical);
+                //List<FicheDeFrais> rechercheFichesDeFrais = new List<FicheDeFrais>();
+
+                ViewBag.listeFichesDeFrais = listeFichesDeFrais;
 
 
-                //ViewBag.listeFicheDeFrais = listeFichesDeFrais;
+                ////Fonction de recherche
+                //if (Request.HttpMethod == "POST" && Request.Form["rechercher"] != null)
+                //{
+                //    string recherche = MettreEnMinuscule(Request.Form["rechercher"]);
 
+                //    foreach (FicheDeFrais ff in listeFichesDeFrais)
+                //    {
+                //        if (MettreEnMinuscule(ff.????).Contains(recherche) || MettreEnMinuscule(ff.????).Contains(recherche))
+                //        {
+                //            rechercheFichesDeFrais.Add(ff);
+                //        }
+                //    }
+                //    ViewBag.listeFichesDeFrais = rechercheFichesDeFrais;
+                //}
             }
             return retour;
         }
@@ -220,9 +234,11 @@ namespace GSB.Controllers
 
         public ActionResult FormCompteRendu(String id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
@@ -246,8 +262,6 @@ namespace GSB.Controllers
 
                 List<Produit> listeProduits = produitDao.RetournerTousLesProduits();
                 ViewBag.listeProduits = listeProduits;
-
-                ActionResult retour = View();
 
                 if (Request.HttpMethod == "POST")
                 {
@@ -301,21 +315,22 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
         public ActionResult FicheCompteRendu(String id)
         {
+            ActionResult retour;
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
                 CompteRenduDAO crDao = new CompteRenduDAO();
-                ActionResult retour = RedirectToAction("Accueil", new { id = "Listedescompterendus" });
+                retour = RedirectToAction("AccueilCR", new { id = "Listedescompterendus" });
 
                 if (!String.IsNullOrWhiteSpace(id))
                 {
@@ -329,16 +344,17 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
         public ActionResult FormEtablissement(string id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
@@ -348,7 +364,6 @@ namespace GSB.Controllers
                 ViewBag.etablissement = etab;
                 List<TypeEtablissement> listeTypesEtablissement = typesEtabDao.RetournerTousLesTypesEtablissement();
                 ViewBag.listeTypesEtablissement = listeTypesEtablissement;
-                ActionResult retour = View();
 
                 if (Request.HttpMethod == "POST")
                 {
@@ -401,21 +416,22 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
         public ActionResult FicheEtablissement(String id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
                 EtablissementDAO etabDao = new EtablissementDAO();
-                ActionResult retour = RedirectToAction("Accueil", new { id = "Listedesetablissements" });
+                retour = RedirectToAction("AccueilCR", new { id = "Listedesetablissements" });
 
                 if (!String.IsNullOrWhiteSpace(id))
                 {
@@ -429,23 +445,23 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
         public ActionResult FormContact(string id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
                 ContactDAO contactDao = new ContactDAO();
                 Contact contact = new Contact();
                 ViewBag.contact = contact;
-                ActionResult retour = View();
 
                 if (Request.HttpMethod == "POST")
                 {
@@ -497,21 +513,22 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
         public ActionResult FicheContact(String id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
                 ContactDAO contactDao = new ContactDAO();
-                ActionResult retour = RedirectToAction("Accueil", new { id = "Listedescontacts" });
+                retour = RedirectToAction("AccueilCR", new { id = "Listedescontacts" });
 
                 if (!String.IsNullOrWhiteSpace(id))
                 {
@@ -525,14 +542,15 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
 
         public ActionResult FormProduit(String id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
                 return RedirectToAction("Login");
@@ -542,7 +560,6 @@ namespace GSB.Controllers
                 ProduitDAO produitDao = new ProduitDAO();
                 Produit produit = new Produit();
                 ViewBag.produit = produit;
-                ActionResult retour = View();
 
                 if (Request.HttpMethod == "POST")
                 {
@@ -592,22 +609,23 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
 
         public ActionResult FicheProduit(String id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
                 ProduitDAO produitDao = new ProduitDAO();
-                ActionResult retour = RedirectToAction("Accueil", new { id = "Listedesproduits" });
+                retour = RedirectToAction("AccueilCR", new { id = "Listedesproduits" });
 
                 if (!String.IsNullOrWhiteSpace(id))
                 {
@@ -621,10 +639,150 @@ namespace GSB.Controllers
                         }
                     }
                 }
-
-                return retour;
             }
+            return retour;
         }
 
+        public ActionResult FicheFrais(String id)
+        {
+            ActionResult retour = RedirectToAction("AccueilFrais");
+
+            if (Session["UserID"] == null)
+            {
+                retour = RedirectToAction("Login");
+            }
+            else
+            {
+                FicheDeFraisDAO ficheDeFraisDao = new FicheDeFraisDAO();
+                retour = RedirectToAction("AccueilFrais");
+
+                if (!String.IsNullOrWhiteSpace(id) && (Int32.TryParse(id, out int idFicheDeFrais)))
+                {
+                    if (ficheDeFraisDao.Read(idFicheDeFrais) != null)
+                    {
+                        FicheDeFrais ficheDeFrais = ficheDeFraisDao.Read(idFicheDeFrais);
+
+                        if ((Request.HttpMethod == "GET") && (Request.Params["action"] != null))
+                        {
+                            if (Request.Params["action"] == "del")
+                            {
+                                ficheDeFraisDao.Delete(ficheDeFrais);
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.ficheDeFrais = ficheDeFrais;
+                            retour = View();
+                        }
+                    }
+                }
+                else
+                {
+
+                    FicheDeFrais ficheDeFrais = new FicheDeFrais();
+                    ficheDeFrais.IdVisiteurMedical = Convert.ToInt32(Session["UserID"]);
+                    ViewBag.ficheDeFrais = ficheDeFrais;
+                    retour = View();
+                }
+            }
+            return retour;
+        }
+
+        public ActionResult FormLigneFrais(String id)
+        {
+            ActionResult retour = RedirectToAction("AccueilFrais");
+
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                FicheDeFraisDAO ficheDeFraisDao = new FicheDeFraisDAO();
+                LigneDeFraisDAO ligneDeFraisDao = new LigneDeFraisDAO();
+
+                if (!String.IsNullOrWhiteSpace(id))
+                {
+                    if (Int32.TryParse(id, out int idFicheDeFrais))
+                    {
+                        if (ficheDeFraisDao.Read(idFicheDeFrais) != null)
+                        {
+                            FicheDeFrais ficheDeFrais = ficheDeFraisDao.Read(idFicheDeFrais);
+                            ViewBag.ficheDeFrais = ficheDeFrais;
+
+                            if ((Request.HttpMethod == "GET") && (Request.Params["action"] != null))
+                            {
+                                if (Request.Params["ligne"] != null)
+                                {
+                                    if (Request.Params["action"] == "del")
+                                    {
+                                        int idLf = Convert.ToInt32(Request.Params["ligne"]);
+                                        LigneDeFrais lf = ligneDeFraisDao.Read(idLf);
+                                        ligneDeFraisDao.Delete(lf);
+                                        retour = RedirectToAction("FicheFrais/" + ficheDeFrais.Id);
+                                    }
+                                    else if (Request.Params["action"] == "modif")
+                                    {
+                                        int idLf = Convert.ToInt32(Request.Params["ligne"]);
+                                        LigneDeFrais lf = ligneDeFraisDao.Read(idLf);
+                                        ViewBag.ligneDeFrais = lf;
+                                        retour = View();
+                                    }
+                                    else
+                                    {
+                                        retour = RedirectToAction("AccueilFrais");
+                                    }
+                                }
+                                else
+                                {
+                                    if (Request.Params["action"] == "ajout")
+                                    {
+                                        ViewBag.ligneDeFrais = new LigneDeFrais();
+                                        retour = View();
+                                    }
+                                    else
+                                    {
+                                        retour = RedirectToAction("AccueilFrais");
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (Request.HttpMethod == "POST")
+                {
+                    if (Request.Form["formulaireLigneDeFrais"] == "Ajouter")
+                    {
+                        int idLigneFrais = Int32.Parse(Request.Form["idLigneFrais"]);
+                        int idFicheFrais = Int32.Parse(Request.Form["idFicheFrais"]);
+                        String libelle = Request.Form["libelle"];
+                        Double montant = double.Parse(Request.Form["montant"]);
+                        bool horsforfait = (Request.Form["horsforfait"] == "1");
+                        bool report = (Request.Form["report"] == "1");
+
+                        LigneDeFrais lf = new LigneDeFrais(idLigneFrais, DateTime.Now, montant, libelle, false, false, horsforfait, report);
+
+                        FicheDeFrais ficheDeFrais = ficheDeFraisDao.Read(idFicheFrais);
+
+                        if ((ficheDeFrais.ListeDeLignesDeFrais.Find(lf2 => lf2.Id == idLigneFrais)) != null)
+                        {
+                            LigneDeFrais ligneDeFrais = (ficheDeFrais.ListeDeLignesDeFrais.Find(lf2 => lf2.Id == idLigneFrais));
+                            ligneDeFrais = lf;
+                        }
+                        else
+                        {
+                            ficheDeFrais.ListeDeLignesDeFrais.Add(lf);
+                        }
+
+                        ficheDeFraisDao.Update(ficheDeFrais);
+                        ViewBag.ficheDeFrais = ficheDeFrais;
+                        retour = RedirectToAction("FicheFrais/" + ficheDeFrais.Id);
+                    }
+
+                }
+            }
+            return retour;
+        }
     }
 }

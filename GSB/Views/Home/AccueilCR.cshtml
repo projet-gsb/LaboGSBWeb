@@ -45,6 +45,8 @@
                     <th class="col-lg-6">Adresse</th>
                     <th class="col-lg-2">Type</th>
                 </tr>
+            </thead>
+            <tbody>
                 @{
                     if (listeEtablissements.Count() == 0)
                     {
@@ -63,8 +65,7 @@
                         }
                     }
                 }
-            </thead>
-            <tbody></tbody>
+            </tbody>
         </table>
     }
     else if (afficherListeContacts)
@@ -85,8 +86,10 @@
                     <th class="col-lg-3">Numéro de téléphone</th>
                     <th class="col-lg-3">Poste</th>
                 </tr>
+            </thead>
+            <tbody>
                 @{
-                    if (listeContacts.Count() == 0) 
+                    if (listeContacts.Count() == 0)
                     {
                         <text>Aucun Résultat </text>
                     }
@@ -104,8 +107,7 @@
                     }
                 }
 
-            </thead>
-            <tbody></tbody>
+            </tbody>
         </table>
     }
     else if (afficherListeProduits)
@@ -127,6 +129,8 @@
                     <th class="col-lg-2">Quantité</th>
                     <th class="col-lg-2">Tarif</th>
                 </tr>
+            </thead>
+            <tbody>
                 @{
                     if (listeProduits.Count() == 0)
                     {
@@ -145,8 +149,7 @@
                         }
                     }
                 }
-            </thead>
-            <tbody></tbody>
+            </tbody>
         </table>
     }
 
@@ -170,10 +173,12 @@
                     <th class="col-lg-3">Établissement</th>
                     <th class="col-lg-3">Contact</th>
                 </tr>
+            </thead>
+            <tbody>
                 @{
                     if (listeCompteRendus.Count() == 0)
                     {
-                       <text> Aucun Résultat </text>
+                        <text> Aucun Résultat </text>
                     }
 
                     else
@@ -181,8 +186,8 @@
                         foreach (CompteRendu cr in listeCompteRendus)
                         {
                             <tr>
-                                <td>@cr.Titre</td>
-                                <td><a href="/Home/FicheCompteRendu/@cr.Id">@cr.Date</a></td>
+                                <td><a href="/Home/FicheCompteRendu/@cr.Id">@cr.Titre</a></td>
+                                <td>@cr.Date</td>
                                 <td>@cr.VisiteurMedicalConcerne</td>
                                 <td>@cr.EtablissementConcerne</td>
                                 <td>@cr.ContactConcerne</td>
@@ -190,9 +195,7 @@
                         }
                     }
                 }
-
-            </thead>
-            <tbody></tbody>
+            </tbody>
         </table>
     }
 
