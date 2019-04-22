@@ -121,7 +121,16 @@ namespace GSB.Controllers
             }
             else
             {
-                //la méthode
+                ActionResult retour = View();
+
+                VisiteurMedicalDAO vmDao = new VisiteurMedicalDAO();
+                FicheDeFraisDAO ficheFraisDao = new FicheDeFraisDAO();
+                LigneDeFraisDAO ligneFraisDao = new LigneDeFraisDAO();
+                List<LigneDeFrais> listeLigneDeFrais = ligneFraisDao.RetournerToutesLesLigneDeFrais();
+                ViewBag.listeLigneDeFrais = listeLigneDeFrais;
+                ViewBag.afficherlisteLigneDeFrais = true;
+
+                return retour;
 
                 return View();
             }

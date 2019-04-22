@@ -1,2 +1,21 @@
-﻿#TODO Gestion Fiches de Frais
+﻿@using System.Collections;
+@using LaboGSB.Models.BO.BOGestionFrais;
+@using LaboGSB.Models.BO.Personne;
+@{
+    List<VisiteurMedical> listeVisiteurMedicalFrais = ViewBag.listeVisiteurMedicalFrais;
+    bool afficherListeVisiteurMedicalFrais = ViewBag.afficherListeVisiteurMedicalFrais;
+
+}
+
+<form class="" method="post" action="/Home/AccueilFrais">
+    <div class="form-group">
+        <label for="rechercher">Rechercher :</label>
+        <input type="text" id="rechercher" name="rechercher" value="" class="form-control">
+        <input type="submit" name="formulaireConnexion" value="Envoyer">
+    </div>
+</form>
+
+ 
+
+
 

@@ -79,5 +79,28 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
             commande.Parameters.AddWithValue("@report", lignedefrais.Report);
             commande.ExecuteNonQuery();
         }
+
+        public List<LigneDeFrais> RetournerToutesLesLigneDeFrais()
+        {
+            List<LigneDeFrais> listeLigneDeFrais = new List<LigneDeFrais>();
+            List<int> listeId = new List<int>();
+            SqlCommand command = Connexion.GetInstance().CreateCommand();
+            command.CommandText = "SELECT id FROM visiteurmedical";
+            // Lecture des résultats
+            SqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                listeId.Add(dataReader.GetInt32(0));
+            }
+            dataReader.Close();
+
+            foreach (int id in listeId)
+            {
+                LigneDeFrais cr = this.Read(id);
+                listeLigneDeFrais.Add(cr);
+            }
+
+            return listeLigneDeFrais;
+        }
     }
 }
