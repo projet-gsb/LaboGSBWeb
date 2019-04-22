@@ -196,23 +196,25 @@ namespace GSB.Controllers
 
         public ActionResult AccueilFrais(string id)
         {
+            ActionResult retour = View();
+
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");
+                retour = RedirectToAction("Login");
             }
             else
             {
                 //la méthode
                 //return View();
-                ActionResult retour = View();
 
                 FicheDeFraisDAO ffDao = new FicheDeFraisDAO();
                 //List<FicheDeFrais> listeFichesDeFrais = ffDao.Read(int i); //id visiteurmedical
-               
+
 
                 //ViewBag.listeFicheDeFrais = listeFichesDeFrais;
-               
+
             }
+            return retour;
         }
 
 
