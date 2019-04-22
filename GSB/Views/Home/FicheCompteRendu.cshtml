@@ -44,7 +44,7 @@
                     @{
                         foreach (Echantillon echantillon in cr.ListeEchantillon)
                         {
-                            <a href="../../Home/FicheProduit/@cr.Id">@echantillon.ProduitEchantillonne.Designation (@echantillon.Quantite)</a>
+                            <a href="../../Home/FicheProduit/@echantillon.ProduitEchantillonne.Id">@echantillon.ProduitEchantillonne.Designation (@echantillon.Quantite)</a>
 
                          }
                     }
