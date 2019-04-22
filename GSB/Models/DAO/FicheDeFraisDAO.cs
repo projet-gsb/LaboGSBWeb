@@ -37,9 +37,11 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
             SqlCommand commande = Connexion.GetInstance().CreateCommand();
             int id = fichedefrais.Id;
             commande.Parameters.AddWithValue("@id", id);
-            commande.CommandText = "DELETE FROM fichedefrais WHERE id = @id";
-            commande.ExecuteNonQuery();
+
             commande.CommandText = "DELETE FROM listefrais WHERE idFicheDeFrais = @id";
+            commande.ExecuteNonQuery();
+
+            commande.CommandText = "DELETE FROM fichedefrais WHERE id = @id";
             commande.ExecuteNonQuery();
 
             LigneDeFraisDAO ligneDeFraisDao = new LigneDeFraisDAO();

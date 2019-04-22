@@ -33,8 +33,9 @@ namespace LaboGSB.Models.DAO.DAOGestionFrais
         public override void Delete(LigneDeFrais lignedefrais)
         {
             SqlCommand commande = Connexion.GetInstance().CreateCommand();
-            commande.CommandText = "DELETE FROM listefrais WHERE idLigneDeFrais = @id";
             commande.Parameters.AddWithValue("@id", lignedefrais.Id);
+
+            commande.CommandText = "DELETE FROM listefrais WHERE idLigneDeFrais = @id";
             commande.ExecuteNonQuery();
 
             commande.CommandText = "DELETE FROM lignedefrais WHERE id = @id";

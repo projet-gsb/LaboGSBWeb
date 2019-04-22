@@ -682,6 +682,7 @@ namespace GSB.Controllers
                     FicheDeFrais ficheDeFrais = new FicheDeFrais();
                     ficheDeFrais.IdVisiteurMedical = Convert.ToInt32(Session["UserID"]);
                     ViewBag.ficheDeFrais = ficheDeFrais;
+                    ficheDeFraisDao.Create(ficheDeFrais);
                     retour = View();
                 }
             }
